@@ -4,6 +4,6 @@ interface ProblemDescriptionWidgetProps {
   problemStatement: string;
 }
 
-export const ProblemDescriptionWidget = ({ problemStatement }: ProblemDescriptionWidgetProps) => {
+export const ProblemDescriptionWidget = () => {
   return <div></div>;
 };

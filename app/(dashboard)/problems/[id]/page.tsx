@@ -1,6 +1,6 @@
 'use client';
 
-import { CodeEditor } from '@/lib/components';
+import { CodeEditor, ProblemDescriptionWidget } from '@/lib/components';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/lib/components/ui/resizable';
 
 export default function ProblemPage() {
@@ -11,7 +11,7 @@ export default function ProblemPage() {
           <ResizablePanelGroup direction="vertical">
             <ResizablePanel defaultSize={70}>
               <div className="flex h-full items-center justify-center p-6">
-                <span className="font-semibold">Two</span>
+                <ProblemDescriptionWidget />
               </div>
             </ResizablePanel>
             <ResizableHandle />
