@@ -1,6 +1,6 @@
 'use client';
 
-import { QuestionDifficulty, QuestionField, QuestionType } from '@prisma/client';
+import { ProblemArea, ProblemDifficulty, ProblemType } from '@prisma/client';
 import { PlusIcon } from '@radix-ui/react-icons';
 import React from 'react';
 import { toast } from 'sonner';
@@ -16,15 +16,23 @@ import {
   DialogTrigger,
 } from '@/lib/components/ui/dialog';
 import { Label } from '@/lib/components/ui/label';
+import { ApiRoutes } from '@/lib/constants/routes';
+import { useAxiosMutation } from '@/lib/hooks';
+import { CreateProblemRequest, CreateProblemResponse } from '@/lib/types';
 import { enumToOptions } from '@/lib/utils';
-import { newProblemStatement } from '@/lib/utils/api';
 
 import { Combobox } from '../ui/combobox';
 
 export const GenerateProblemDialog = () => {
-  const [questionType, setQuestionType] = React.useState<QuestionType>();
-  const [questionDifficulty, setQuestionDifficulty] = React.useState<QuestionDifficulty>();
-  const [questionField, setQuestionField] = React.useState<QuestionField>();
+  const [problemType, setProblemType] = React.useState<ProblemType>();
+  const [problemArea, setQuestionArea] = React.useState<ProblemArea>();
+  const [problemDifficulty, setProblemDifficulty] = React.useState<ProblemDifficulty>();
+
+  const {
+    error: createProblemError,
+    loading: isCreating,
+    execute: createProblemStatement,
+  } = useAxiosMutation<CreateProblemResponse, CreateProblemRequest>(ApiRoutes.CreateProblem);
 
   return (
     <Dialog>
@@ -48,9 +56,9 @@ export const GenerateProblemDialog = () => {
               defaultButtonLabel={'Select question type'}
               notFoundLabel={'No match found'}
               onChange={(value) => {
-                setQuestionType(value as QuestionType);
+                setProblemType(value as ProblemType);
               }}
-              options={enumToOptions(QuestionType)}
+              options={enumToOptions(ProblemType)}
               searchLabel={'Search types'}
             />
           </div>
@@ -62,9 +70,9 @@ export const GenerateProblemDialog = () => {
               defaultButtonLabel={'Select difficulty'}
               notFoundLabel={'No match found'}
               onChange={(value) => {
-                setQuestionDifficulty(value as QuestionDifficulty);
+                setProblemDifficulty(value as ProblemDifficulty);
               }}
-              options={enumToOptions(QuestionDifficulty)}
+              options={enumToOptions(ProblemDifficulty)}
               searchLabel={'Search types'}
             />
           </div>
@@ -76,9 +84,9 @@ export const GenerateProblemDialog = () => {
               defaultButtonLabel={'Select field'}
               notFoundLabel={'No match found'}
               onChange={(value) => {
-                setQuestionField(value as QuestionField);
+                setQuestionArea(value as ProblemArea);
               }}
-              options={enumToOptions(QuestionField)}
+              options={enumToOptions(ProblemArea)}
               searchLabel={'Search types'}
             />
           </div>
@@ -86,18 +94,16 @@ export const GenerateProblemDialog = () => {
         <DialogFooter>
           <Button
             className="text-sm"
-            disabled={!questionType || !questionDifficulty || !questionField}
+            disabled={!problemType || !problemDifficulty || !problemArea}
             onClick={async () => {
-              if (questionType && questionDifficulty && questionField) {
+              if (problemType && problemDifficulty && problemArea) {
                 toast.info('Creating Problem Statement', {
                   description: 'Summoning our top-tier AI to whip up a fresh problem statement just for you',
                 });
-                const response = await newProblemStatement({
-                  difficulty: questionDifficulty,
-                  questionField: questionField,
-                  questionType: questionType,
+                const response = await createProblemStatement({
+                  data: { difficulty: problemDifficulty, problemArea: problemArea, problemType: problemType },
                 });
-                if (response.ok) {
+                if (response?.data?.id) {
                   toast.success('Problem Statement Created', {
                     description: 'Your problem statement has been created and is ready for use',
                   });

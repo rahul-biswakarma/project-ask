@@ -8,12 +8,16 @@ export const POST = async (request: Request) => {
   const user = await getUserByClerkID();
   const generatedProblemStatement = await generateProblemStatement(data);
 
-  const entry = await prisma.questions.create({
+  const entry = await prisma.problem.create({
     data: {
-      difficulty: data.difficulty,
+      area: data.problemArea.toUpperCase(),
+      createdBy: {
+        connect: {
+          id: user?.id ?? '',
+        },
+      },
+      difficulty: data.difficulty.toUpperCase(),
       problemStatement: generatedProblemStatement.problemStatement,
-      questionField: data.questionField,
-      questionType: data.questionType,
       testCases: {
         create: generatedProblemStatement.testCases.map((testCase) => ({
           input: testCase.input,
@@ -21,13 +25,9 @@ export const POST = async (request: Request) => {
         })),
       },
       title: generatedProblemStatement.title,
-      user: {
-        connect: {
-          id: user?.id ?? '',
-        },
-      },
+      type: data.problemType.toUpperCase(),
     },
   });
 
-  return NextResponse.json({ data: entry });
+  return NextResponse.json(entry);
 };

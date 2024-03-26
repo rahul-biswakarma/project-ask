@@ -1,12 +1,20 @@
-import { QuestionDifficulty, QuestionField, Questions, QuestionType } from '@prisma/client';
+import { Problem, ProblemArea, ProblemDifficulty, ProblemType } from '@prisma/client';
 
 export interface ListQuestionsRequest {
-  questionType?: QuestionType;
-  questionField?: QuestionField;
-  difficulty?: QuestionDifficulty;
+  problemType?: ProblemType;
+  problemArea?: ProblemArea;
+  difficulty?: ProblemDifficulty;
 }
 
 export interface ListQuestionsResponse {
-  data: Questions[];
+  data: Problem[];
   totalCount: number;
 }
+
+export interface CreateProblemRequest {
+  difficulty: ProblemDifficulty;
+  problemType: ProblemType;
+  problemArea: ProblemArea;
+}
+
+export interface CreateProblemResponse extends Problem {}

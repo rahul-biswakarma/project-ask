@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^4.29.9",
+    "@langchain/openai": "^0.0.23",
     "@monaco-editor/react": "^4.6.0",
     "@prisma/client": "^5.11.0",
     "@radix-ui/react-dialog": "^1.0.5",

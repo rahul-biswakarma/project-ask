@@ -5,6 +5,7 @@ import React from 'react';
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/lib/components/ui/table';
 import { ApiRoutes } from '@/lib/constants/routes';
+import { useAxios } from '@/lib/hooks';
 import { ListQuestionsRequest, ListQuestionsResponse } from '@/lib/types';
 
 import { Button } from '../ui/button';
@@ -14,19 +15,17 @@ const PageSize = 20;
 export const QuestionTable = () => {
   const [currentPage, setCurrentPage] = React.useState(1);
   const {
-    data: questionsListData,
+    data: questionsList,
     error: isQuestionError,
-    isLoading: isQuestionsLoading,
-  } = useDataQueries<ListQuestionsRequest, ListQuestionsResponse>({
-    page: currentPage,
-    pageSize: PageSize,
-    queryKey: `list-question-${PageSize}`,
+    loading: isQuestionsLoading,
+  } = useAxios<ListQuestionsResponse, ListQuestionsRequest>({
+    data: { page: currentPage, pageSize: PageSize },
     url: ApiRoutes.ListQuestions,
   });
 
   if (isQuestionsLoading) return <div>Loading...</div>;
 
-  const { data: questionList, totalCount } = questionsListData;
+  const totalCount = questionsList?.totalCount || 0;
 
   const doesPreviousExists = currentPage > 1;
   const doesNextExists = totalCount > currentPage * PageSize;
@@ -44,7 +43,7 @@ export const QuestionTable = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {questionList.map((question) => (
+            {questionsList?.data?.map((question) => (
               <TableRow key={question.id}>
                 <TableCell className="font-medium">{}</TableCell>
                 <TableCell className="cursor-pointer">

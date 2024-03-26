@@ -3,14 +3,14 @@ import { StructuredOutputParser } from 'langchain/output_parsers';
 import { PromptTemplate } from 'langchain/prompts';
 import z from 'zod';
 
-import { CreatePromptProps } from '@/lib/types';
+import { CreateProblemRequest } from '@/lib/types';
 
 const parser = StructuredOutputParser.fromZodSchema(
   z.object({
     problemStatement: z
       .string()
       .describe(
-        'a dsa problem statement with example, should have detailed description and examples for what user has to code. also be very creative with the problem statement and present it in a form of interesting story.',
+        'a dsa problem statement with example, should have detailed description and examples for what user has to code. Narrate the problem statement like a story, make it interesting and engaging for the user to read and understand the problem statement easily',
       ),
     testCases: z
       .array(
@@ -26,23 +26,23 @@ const parser = StructuredOutputParser.fromZodSchema(
   }),
 );
 
-const getPrompt = async ({ difficulty, questionType, questionField }: CreatePromptProps) => {
+const getPrompt = async ({ difficulty, problemType, problemArea }: CreateProblemRequest) => {
   const format_instructions = parser.getFormatInstructions();
   const prompt = new PromptTemplate({
     inputVariables: ['entry'],
     partialVariables: { format_instructions },
     template:
-      'generate a DSA(data structure and algorithm), and format your response to match the format instructions, no matter what! \n{format_instructions} \n{entry}',
+      'generate a data structure and algorithm problem statement, and format your response to match the format instructions, no matter what! \n{format_instructions} \n{entry}',
   });
 
   const input = await prompt.format({
-    entry: `problem statement of difficulty ${difficulty}, related to ${questionField} field, focusing on ${questionType}`,
+    entry: `problem statement of difficulty ${difficulty}, related to ${problemArea} field, focusing on ${problemType}`,
   });
 
   return input;
 };
 
-export const generateProblemStatement = async (props: CreatePromptProps) => {
+export const generateProblemStatement = async (props: CreateProblemRequest) => {
   const input = await getPrompt(props);
 
   const model = new OpenAI({
