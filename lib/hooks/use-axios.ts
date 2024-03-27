@@ -10,8 +10,8 @@ interface AxiosHookResult<ResponseType> {
 }
 
 interface PaginationParams {
-  page: number;
-  pageSize: number;
+  page?: number;
+  pageSize?: number;
 }
 
 interface AxiosProps<RequestType> extends AxiosRequestConfig {
