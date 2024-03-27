@@ -10,13 +10,13 @@ export default function ProblemPage() {
         <ResizablePanel defaultSize={50}>
           <ResizablePanelGroup direction="vertical">
             <ResizablePanel defaultSize={70}>
-              <div className="flex h-full items-center justify-center p-6">
+              <div className="flex h-full px-3 py-1">
                 <ProblemDescriptionWidget />
               </div>
             </ResizablePanel>
             <ResizableHandle />
             <ResizablePanel defaultSize={30}>
-              <div className="flex h-full items-center justify-center p-6">
+              <div className="flex h-full px-3 py-1">
                 <span className="font-semibold">Three</span>
               </div>
             </ResizablePanel>
