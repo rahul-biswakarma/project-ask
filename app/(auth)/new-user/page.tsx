@@ -23,12 +23,12 @@ const createNewUser = async () => {
         },
       });
     }
-    redirect(PageRoutes.Dashboard);
   }
 };
 
 const NewUser = async () => {
   createNewUser();
+  redirect(PageRoutes.Dashboard);
 };
 
 export default NewUser;
