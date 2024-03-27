@@ -1,25 +1,28 @@
-import { Problem, ProblemArea, ProblemDifficulty, ProblemType } from '@prisma/client';
+'use client';
+
 import React from 'react';
+
+import { ApiRoutes } from '@/lib/constants/routes';
+import { useAxios } from '@/lib/hooks';
+import { GetProblemRequest, GetProblemResponse } from '@/lib/types';
 
 import { Badge } from '../ui/badge';
 
 interface ProblemDescriptionWidgetProps {
-  problemStatement: string;
+  problemId: string;
 }
 
-export const ProblemDescriptionWidget = () => {
-  const problem: Problem = {
-    area: ProblemArea.BASIC,
-    createdAt: new Date(),
-    creatorId: 'hlsh',
-    difficulty: ProblemDifficulty.MEDIUM,
-    hint: ['hstn', 'thh', 'hhjl'],
-    id: 'problemId',
-    problemStatement: 'shsioio',
-    title: 'Largest substring of the Array',
-    type: ProblemType.ARRAY,
-    updatedAt: new Date(),
-  };
+export const ProblemDescriptionWidget = ({ problemId }: ProblemDescriptionWidgetProps) => {
+  const {
+    data: problem,
+    error: isProblemError,
+    loading: isProblemLoading,
+  } = useAxios<GetProblemResponse, GetProblemRequest>({
+    data: { id: problemId },
+    url: ApiRoutes.GetProblem,
+  });
+ 
+  if (isProblemLoading || !problem) return <div>Loading...</div>;
 
   return (
     <div className="w-full space-y-6 px-4 py-6">
@@ -30,7 +33,7 @@ export const ProblemDescriptionWidget = () => {
           <Badge variant="outline">{problem.difficulty}</Badge>
           <Badge variant="outline">{problem.area}</Badge>
         </div>
-        <p className="text-gray-500 pt-3">{problem.problemStatement}</p>
+        <p className="pt-3 text-gray-500">{problem.problemStatement}</p>
       </div>
     </div>
   );

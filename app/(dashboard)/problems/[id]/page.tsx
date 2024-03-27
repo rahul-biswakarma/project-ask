@@ -3,7 +3,7 @@
 import { CodeEditor, ProblemDescriptionWidget } from '@/lib/components';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/lib/components/ui/resizable';
 
-export default function ProblemPage() {
+export default function Page({ params }: { params: { id: string } }) {
   return (
     <div className="h-full px-6 py-4">
       <ResizablePanelGroup className="h-full w-full rounded-lg border" direction="horizontal">
@@ -11,7 +11,7 @@ export default function ProblemPage() {
           <ResizablePanelGroup direction="vertical">
             <ResizablePanel defaultSize={70}>
               <div className="flex h-full px-3 py-1">
-                <ProblemDescriptionWidget />
+                <ProblemDescriptionWidget problemId={params.id} />
               </div>
             </ResizablePanel>
             <ResizableHandle />
