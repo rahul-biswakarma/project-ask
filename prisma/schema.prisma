@@ -42,30 +42,30 @@ model Submission {
   updatedAt       DateTime @updatedAt
   submissionCode  String
   creatorId       String
-  questionId      String
+  problemId       String
   passedTestCases String[]
   failedTestCases String[]
   createdBy       User     @relation(fields: [creatorId], references: [id])
-  question        Problem  @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  problem         Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
 
   @@unique([creatorId, id])
-  @@unique([questionId, id])
+  @@unique([problemId, id])
 }
 
 model TestCase {
-  id         String   @id @default(uuid())
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  input      String
-  output     String
-  questionId String
-  question   Problem  @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  input     String
+  output    String
+  problemId String
+  problem   Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
 
-  @@unique([questionId, id])
+  @@unique([problemId, id])
 }
 
 enum ProblemType {
-  ARRAY
+  ARRAY 
   SORTING
   PATH_FINDING
   GRAPH
