@@ -32,7 +32,7 @@ const getPrompt = async ({ difficulty, problemType, problemArea }: CreateProblem
     inputVariables: ['entry'],
     partialVariables: { format_instructions },
     template:
-      'generate a data structure and algorithm problem statement, and format your response to match the format instructions, no matter what! \n{format_instructions} \n{entry}',
+      'generate a data structure and algorithm problem statement, and format your response as a JSON stringified string also match the format instructions, no matter what! \n{format_instructions} \n{entry}',
   });
 
   const input = await prompt.format({
