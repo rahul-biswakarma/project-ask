@@ -18,3 +18,9 @@ export interface CreateProblemRequest {
 }
 
 export interface CreateProblemResponse extends Problem {}
+
+export interface GetProblemRequest {
+  id: string;
+}
+
+export interface GetProblemResponse extends Problem {}
