@@ -8,6 +8,11 @@ export const POST = async (request: Request) => {
   const user = await getUserByClerkID();
   const generatedProblemStatement = await generateProblemStatement(data);
 
+  const testCases = generatedProblemStatement.testCases.map((testCase) => ({
+    input: testCase.input,
+    output: testCase.output,
+  }));
+
   const entry = await prisma.problem.create({
     data: {
       area: data.problemArea.toUpperCase(),
@@ -19,13 +24,15 @@ export const POST = async (request: Request) => {
       difficulty: data.difficulty.toUpperCase(),
       problemStatement: generatedProblemStatement.problemStatement,
       testCases: {
-        create: generatedProblemStatement.testCases.map((testCase) => ({
-          input: testCase.input,
-          output: testCase.output,
-        })),
+        createMany: {
+          data: testCases,
+        },
       },
       title: generatedProblemStatement.title,
       type: data.problemType.toUpperCase(),
+    },
+    include: {
+      testCases: true,
     },
   });
 

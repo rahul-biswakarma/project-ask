@@ -1,4 +1,4 @@
-import { Problem, ProblemArea, ProblemDifficulty, ProblemType } from '@prisma/client';
+import { Problem, ProblemArea, ProblemDifficulty, ProblemType, TestCase } from '@prisma/client';
 
 export interface ListQuestionsRequest {
   problemType?: ProblemType;
@@ -23,4 +23,6 @@ export interface GetProblemRequest {
   id: string;
 }
 
-export interface GetProblemResponse extends Problem {}
+export interface GetProblemResponse extends Problem {
+  testCases: TestCase[];
+}

@@ -6,6 +6,9 @@ export const POST = async (request: Request) => {
   const { id } = await request.json();
 
   const problemObject = await prisma.problem.findUnique({
+    include: {
+      testCases: true,
+    },
     where: {
       id,
     },
