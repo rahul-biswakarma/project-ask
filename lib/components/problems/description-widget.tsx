@@ -7,6 +7,7 @@ import { useAxios } from '@/lib/hooks';
 import { GetProblemRequest, GetProblemResponse } from '@/lib/types';
 
 import { Badge } from '../ui/badge';
+import { TestCaseRenderer } from './testcase-renderer';
 
 interface ProblemDescriptionWidgetProps {
   problemId: string;
@@ -21,7 +22,7 @@ export const ProblemDescriptionWidget = ({ problemId }: ProblemDescriptionWidget
     data: { id: problemId },
     url: ApiRoutes.GetProblem,
   });
- 
+
   if (isProblemLoading || !problem) return <div>Loading...</div>;
 
   return (
@@ -34,6 +35,7 @@ export const ProblemDescriptionWidget = ({ problemId }: ProblemDescriptionWidget
           <Badge variant="outline">{problem.area}</Badge>
         </div>
         <p className="pt-3 text-gray-500">{problem.problemStatement}</p>
+        <TestCaseRenderer testCase={[problem.testCases[0]]} title="Example test case" />
       </div>
     </div>
   );
